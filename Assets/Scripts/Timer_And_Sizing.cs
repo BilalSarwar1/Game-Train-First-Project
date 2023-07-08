@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Timer_And_Sizing : MonoBehaviour
 {
@@ -10,17 +11,35 @@ public class Timer_And_Sizing : MonoBehaviour
     public float offset;
 
     public bool isGamestarted = false;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
             isGamestarted = true;
-            
         }
-        else if(Input.GetKey(KeyCode.Q))
+
+        
+
+        if (Input.GetKey(KeyCode.Q))
         {
             isGamestarted = false;
         }
+
+
+
+        if (isGamestarted)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                transform.localScale += new Vector3(offset, offset, offset) * Time.deltaTime;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                transform.DOScale(new Vector3(1, 1, 1), 1f);
+            }
+        }
+        
         
         if (isGamestarted)
         {
@@ -28,24 +47,13 @@ public class Timer_And_Sizing : MonoBehaviour
             float XRotate = Input.GetAxis("Vertical");
             timer += Time.deltaTime;
             Debug.Log(timer);
-
-                
-            transform.localScale += new Vector3(offset, offset, offset) * Time.deltaTime;
-                
             transform.Rotate(XRotate, YRotate, 0);
-            
-            //transform.Rotate();
 
+            //transform.Rotate();
         }
         else
         {
             timer = 0;
-            if (transform.localScale.x > 1f)
-            {
-                transform.localScale -= new Vector3(offset, offset, offset) * Time.deltaTime;
-            }
         }
-        
-        
     }
 }
